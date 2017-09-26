@@ -1,0 +1,29 @@
+/* Imports */
+@import url('reset.css');
+/* General */
+form p { text-align: center; }
+form button { width: 100%; padding: 15px 20px; border: 0; cursor: pointer; }
+/* IDs */
+#content { width: 100%; max-width: 800px; margin: auto; overflow: hidden; }
+#menu { float: left; }
+#menu ul { padding: 0; margin: 0; }
+#menu ul li { display: block; text-align: center; }
+#menu ul li a { display: block; width: 100%; height: 100%; padding: 10px; text-decoration: none; }
+#person-info { position: relative; }
+/* Classes */
+.group { display: inline-block; margin-bottom: 5px; }
+.group.half { width: calc(50% - 2px); }
+.group.full { width: 100%; }
+.group input, .group select { float: right; }
+.group textarea { display: block; width: 100%; resize: vertical; }
+a.remove { position: absolute; top: 0; right: 0; text-decoration: none; color: #C00; }
+a.remove:hover { text-decoration: underline; }
+/* Combined */
+form button, #menu ul li a { color: #fff; background-color: #008cff; transition: background .3s ease-in-out; }
+form button:hover, #menu ul li a:hover { background-color: #07d; }
+@media screen and (max-width: 800px) {
+  /* IDs */
+  #menu { width: 100%; float: none; }
+  /* Classes */
+  .group input, .group select { float: none; display: block; }
+}
