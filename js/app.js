@@ -1,5 +1,5 @@
 var persons = [];
-var googleMapsAPIKey = "GOOGLE_MAPS_API_KEY_INSERT_HERE";
+var googleMapsAPIKey = "AIzaSyB0xk7d5pz1zA_3-4eRAk2F2zAzAi2YVm4";
 
 function getCountries() {
   // Object containing all the supported countries
@@ -48,7 +48,7 @@ function removePerson(index) {
   var personCount = persons.length;
   // Remove person from array, if it's more than 1
   if (personCount > 1) {
-    persons.splice(index, index);
+    var remove = persons.splice($.inArray(index, persons), 1);
   } else {
     // Clear the array, if there's only 1 person
     persons = [];
@@ -108,7 +108,6 @@ function showPersonInfo(index) {
   // Interate over the persons data and print it out.
   for (var key in formData) {
     var value = formData[key];
-    console.log(value);
     if (person[value] !== "") {
       $("#" + value + "-info").text(key + ": " + person[value]);
     } else {
@@ -138,15 +137,34 @@ function resetMenu() {
   $("#menu ul li").not(":first").remove();
 }
 
+function uppercaseFirstLetter(str) {
+  return str[0].toUpperCase() + str.slice(1);
+}
+
+function sortByName(a, b) {
+  // Retreive both persons fullname and make it uppercase (just in case)
+  var aFullname = uppercaseFirstLetter(a.firstname + " " + a.lastname);
+  var bFullname = uppercaseFirstLetter(b.firstname + " " + b.lastname);
+  // Compare names and return the value for the sort function
+  return ((aFullname < bFullname) ? -1: ((aFullname > bFullname) ? 1 : 0));
+}
+
 function getSavedPersons() {
   // Retrieves persons from local storage
   var personData = JSON.parse(localStorage.getItem("persons"));
   if (personData !== null) {
+    var personCount = personData.length;
     // If it's not empty then rebuild the menu and set the persons object equal to the value of the local storage
     resetMenu();
-    persons = personData;
-    for (var key in persons){
-      addPersonToMenu(key);
+    if (personCount > 0) {
+      persons = personData;
+      console.log("Sorting persons...");
+      persons.sort(sortByName);
+      for (var key in persons){
+        addPersonToMenu(key);
+      }
+    } else {
+      console.log("No saved persons found...");
     }
   }
 }
@@ -155,7 +173,12 @@ function clearFormular() {
   // Clears all the value fields in the form
   var formData = getFormDataIds();
   for (var key in formData) {
-    $("#" + formData[key]).val("");
+    var field = formData[key];
+    if (field !== "country") {
+      $("#" + formData[key]).val("");
+    } else {
+      $("#" + formData[key]).val("none");
+    }
   }
 }
 
@@ -187,8 +210,12 @@ function onSubmit(e) {
     var person = {};
     for (var key in formData) {
       var field = formData[key];
-      if (field !== "phone") {
+      if (field !== "phone" && field !== "firstname" && field !== "lastname") {
         person[field] = $("#" + field).val();
+      } else if (field === "firstname" || field === "lastname") {
+        var value = $("#" + field).val();
+        // Makes the name in uppercase (to make it grammatically correct)
+        person[field] = uppercaseFirstLetter(value);
       } else {
         person[field] = phone;
       }
@@ -218,7 +245,9 @@ $("form").submit(onSubmit);
 
 $(document).ready(function() {
   // Update the select with countries
+  console.log("Retrieving countries...");
   updateCountries();
   // Retrieve the saved persons
+  console.log("Checking for saved persons...");
   getSavedPersons();
 });
