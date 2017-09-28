@@ -1,5 +1,5 @@
 var persons = [];
-var googleMapsAPIKey = "AIzaSyB0xk7d5pz1zA_3-4eRAk2F2zAzAi2YVm4";
+var googleMapsAPIKey = "GOOGLE_MAPS_API_KEY_INSERT_HERE";
 
 function getCountries() {
   // Object containing all the supported countries
