@@ -5,7 +5,7 @@ This means that it doesn't use a database, but instead uses the users device for
 
 ## Pros and Cons
 
-The pros using localstorage is:
+The pros using localstorage:
 - Privacy is respected a little more (as the user is the one with the information, not the website/company).
 
 The Cons:
